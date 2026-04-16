@@ -11,25 +11,27 @@ interface Props {
 
 export function KanbanColumn({ id, label, color, clients }: Props) {
   return (
-    <div className="flex flex-col min-w-[240px] w-[260px] shrink-0">
+    <div className="flex flex-col min-w-[260px] w-[280px] shrink-0">
       <div
-        className="flex items-center gap-2 rounded-t-lg px-3 py-2"
-        style={{ backgroundColor: `hsl(${color} / 0.15)` }}
+        className="flex items-center gap-2.5 rounded-t-xl px-4 py-3"
+        style={{ backgroundColor: `hsl(${color} / 0.1)` }}
       >
         <span
-          className="h-2.5 w-2.5 rounded-full"
-          style={{ backgroundColor: `hsl(${color})` }}
+          className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1"
+          style={{ backgroundColor: `hsl(${color})`, ringColor: `hsl(${color} / 0.3)` }}
         />
         <h3 className="text-sm font-semibold text-foreground">{label}</h3>
-        <span className="ml-auto text-xs text-muted-foreground">{clients.length}</span>
+        <span className="ml-auto text-xs font-medium text-muted-foreground bg-background/60 px-2 py-0.5 rounded-full">
+          {clients.length}
+        </span>
       </div>
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex-1 space-y-2 rounded-b-lg border border-t-0 p-2 min-h-[200px] transition-colors ${
-              snapshot.isDraggingOver ? 'bg-accent/50' : 'bg-muted/30'
+            className={`flex-1 space-y-2.5 rounded-b-xl border border-t-0 border-border/50 p-3 min-h-[220px] transition-all duration-300 ${
+              snapshot.isDraggingOver ? 'bg-accent/60 border-primary/20' : 'bg-muted/20'
             }`}
           >
             {clients.map((c, i) => (
