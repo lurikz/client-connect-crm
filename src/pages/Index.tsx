@@ -13,34 +13,26 @@ export default function Index() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const load = useCallback(async () => {
-    const data = await getClients();
-    setClients(data);
-  }, []);
-
+  const load = useCallback(async () => { setClients(await getClients()); }, []);
   useEffect(() => { load(); }, [load]);
 
   const handleCreate = async (data: { name: string; phone: string; email: string; notes: string; status: KanbanStatus }) => {
     setLoading(true);
     try {
-      const c = await createClient(data);
-      setClients((prev) => [...prev, c]);
+      const c = await createClient({
+        ...data, company: '', origin: '', responsible: '', tags: [], deal_value: 0,
+      });
+      setClients(prev => [...prev, c]);
       toast({ title: 'Cliente criado!' });
     } catch {
       toast({ title: 'Erro ao criar cliente', variant: 'destructive' });
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   const handleMove = async (id: string, newStatus: KanbanStatus) => {
-    setClients((prev) => prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c)));
-    try {
-      await updateClient(id, { status: newStatus });
-    } catch {
-      load();
-      toast({ title: 'Erro ao mover cliente', variant: 'destructive' });
-    }
+    setClients(prev => prev.map(c => (c.id === id ? { ...c, status: newStatus } : c)));
+    try { await updateClient(id, { status: newStatus }); }
+    catch { load(); toast({ title: 'Erro ao mover cliente', variant: 'destructive' }); }
   };
 
   return (
@@ -51,22 +43,15 @@ export default function Index() {
           <QuickAddDialog onSubmit={handleCreate} />
         </div>
       </header>
-
       <main className="mx-auto max-w-7xl p-6">
         <Tabs defaultValue="kanban">
           <TabsList className="mb-6">
-            <TabsTrigger value="kanban" className="gap-1.5">
-              <LayoutDashboard className="h-4 w-4" /> Funil de Vendas
-            </TabsTrigger>
-            <TabsTrigger value="clients" className="gap-1.5">
-              <Users className="h-4 w-4" /> Clientes
-            </TabsTrigger>
+            <TabsTrigger value="kanban" className="gap-1.5"><LayoutDashboard className="h-4 w-4" /> Funil</TabsTrigger>
+            <TabsTrigger value="clients" className="gap-1.5"><Users className="h-4 w-4" /> Clientes</TabsTrigger>
           </TabsList>
-
           <TabsContent value="kanban">
             <KanbanBoard clients={clients} onMove={handleMove} />
           </TabsContent>
-
           <TabsContent value="clients">
             <div className="grid gap-8 lg:grid-cols-[1fr_2fr]">
               <div>
@@ -74,7 +59,7 @@ export default function Index() {
                 <ClientForm onSubmit={handleCreate} loading={loading} />
               </div>
               <div>
-                <h2 className="text-lg font-semibold mb-4">Clientes Cadastrados ({clients.length})</h2>
+                <h2 className="text-lg font-semibold mb-4">Clientes ({clients.length})</h2>
                 <ClientList clients={clients} />
               </div>
             </div>
