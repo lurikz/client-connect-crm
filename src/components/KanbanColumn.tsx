@@ -17,8 +17,8 @@ export function KanbanColumn({ id, label, color, clients }: Props) {
         style={{ backgroundColor: `hsl(${color} / 0.1)` }}
       >
         <span
-          className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1"
-          style={{ backgroundColor: `hsl(${color})`, ringColor: `hsl(${color} / 0.3)` }}
+          className="h-2.5 w-2.5 rounded-full"
+          style={{ backgroundColor: `hsl(${color})` }}
         />
         <h3 className="text-sm font-semibold text-foreground">{label}</h3>
         <span className="ml-auto text-xs font-medium text-muted-foreground bg-background/60 px-2 py-0.5 rounded-full">
