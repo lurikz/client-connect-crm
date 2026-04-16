@@ -6,9 +6,10 @@ import { KanbanColumn } from './KanbanColumn';
 interface Props {
   clients: Client[];
   onMove: (clientId: string, newStatus: KanbanStatus) => void;
+  onCardClick?: (client: Client) => void;
 }
 
-export function KanbanBoard({ clients, onMove }: Props) {
+export function KanbanBoard({ clients, onMove, onCardClick }: Props) {
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const newStatus = result.destination.droppableId as KanbanStatus;
@@ -25,6 +26,7 @@ export function KanbanBoard({ clients, onMove }: Props) {
             key={col.id}
             {...col}
             clients={clients.filter((c) => c.status === col.id)}
+            onCardClick={onCardClick}
           />
         ))}
       </div>
