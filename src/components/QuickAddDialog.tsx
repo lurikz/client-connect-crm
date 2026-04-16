@@ -30,28 +30,30 @@ export function QuickAddDialog({ onSubmit }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="gap-1">
+        <Button className="gap-2 gradient-primary text-primary-foreground shadow-md hover:opacity-90 transition-opacity">
           <Plus className="h-4 w-4" /> Novo Lead
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="glass border-border/50">
         <DialogHeader>
           <DialogTitle>Adicionar Lead</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="space-y-1">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
             <Label htmlFor="q-name">Nome *</Label>
-            <Input id="q-name" value={name} onChange={(e) => setName(e.target.value)} required maxLength={100} />
+            <Input id="q-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome do lead" required maxLength={100} className="bg-background/50" />
           </div>
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Label htmlFor="q-phone">Telefone</Label>
-            <Input id="q-phone" value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={20} />
+            <Input id="q-phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(00) 00000-0000" maxLength={20} className="bg-background/50" />
           </div>
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Label htmlFor="q-notes">Observação</Label>
-            <Textarea id="q-notes" value={notes} onChange={(e) => setNotes(e.target.value)} maxLength={500} rows={2} />
+            <Textarea id="q-notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Notas rápidas..." maxLength={500} rows={2} className="bg-background/50" />
           </div>
-          <Button type="submit" disabled={!name.trim()} className="w-full">Adicionar</Button>
+          <Button type="submit" disabled={!name.trim()} className="w-full gradient-primary text-primary-foreground">
+            Adicionar
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
